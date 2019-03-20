@@ -1,0 +1,22 @@
+path=/glusterfs/surft/users/mp877190/data/datastore/EE/LANDSAT_8_C1/dungeness_10_50/*
+
+code_time_date=/home/users/mp877190/getting_netcdf/tide_tables/find_all_dates_times_of_netcdf_files.py
+
+code_tide=/home/users/mp877190/getting_netcdf/tide_tables/plot_tide_table.py
+
+tide_table=/home/users/mp877190/getting_netcdf/tide_tables/tidetable_Dungeness/2013DOV.txt
+
+
+
+for folder in $path ; 
+do [ -d $folder ] && echo $folder && cd "$folder/scenes"; 
+netcdf=`find *.nc` && echo $netcdf ; 
+meta=`find *_MTL.txt` ; date=${netcdf:17:8} ; 
+timedate=`python $code_time_date $meta "$folder/scenes"` && echo $timedate ; 
+tide_type=`python $code_tide $tide_table $timedate` && echo $tide_type ; 
+FNAME=$(basename ${folder}) && FPATH=$(dirname ${folder}) ; 
+if [ -n "${tide_type}" ] ; then mv ${folder} ${FPATH}/${FNAME}_${tide_type} ; 
+else echo "no tide type" ; fi ; 
+cd .. ; 
+done
+

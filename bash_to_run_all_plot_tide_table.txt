@@ -1,0 +1,6 @@
+file=/home/users/mp877190/getting_netcdf/tide_tables/heysham_date_time_all.txt
+filename=$file
+code=/home/users/mp877190/getting_netcdf/tide_tables/plot_tide_table.py
+tide_table=/home/users/mp877190/getting_netcdf/tide_tables/tidetable_Heysham/2013HEY.txt
+
+while read -r line ; do name="$line" ; python $code $tide_table $name ; done < "$filename"
